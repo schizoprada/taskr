@@ -167,14 +167,16 @@ def findconfigvalue(keyquery: str) -> t.List[t.Tuple[str, str, t.Any]]:
     results = []
     configdict = configmanager.getall()
 
-    for section, sectiondata in configdict.items():
-        if not isinstance(sectiondata, dict):
-            continue
+    # Flatten the config dict
+    flattened = _flattendict(configdict)
 
-        for key, value in _flattendict(sectiondata, section).items():
-            if keyquery.lower() in key.lower():
-                # Extract the key part without the section prefix
-                keypart = key[len(section)+1:] if key.startswith(section) else key
+    # Search for matches
+    for key, value in flattened.items():
+        if keyquery.lower() in key.lower():
+            # Split the key into section and remainder
+            parts = key.split('.', 1)
+            if len(parts) == 2:
+                section, keypart = parts
                 results.append((section, keypart, value))
 
     return results
@@ -191,14 +193,19 @@ def _flattendict(d: dict, prefix: str = '') -> dict:
     Returns:
         Flattened dictionary.
     """
-    result = {}
+    if not isinstance(d, dict):
+        return {}
 
+    result = {}
     for k, v in d.items():
         key = f"{prefix}.{k}" if prefix else k
 
         if isinstance(v, dict):
-            result.update(_flattendict(v, key))
+            # Recursively flatten nested dicts
+            nested = _flattendict(v, key)
+            result.update(nested)
         else:
+            # Add leaf values
             result[key] = v
 
     return result

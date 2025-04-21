@@ -92,6 +92,6 @@ def logger(name: str, level: int = logging.DEBUG, console: bool = True, path: t.
 
     return log
 
-log = logger('taskr')
+log = logger('taskr', level=logging.INFO)
 
 __all__ = ['log']

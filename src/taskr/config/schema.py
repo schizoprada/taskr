@@ -13,7 +13,9 @@ class TaskwarriorData(BaseModel):
     @validator("location")
     def expandpath(cls, v):
         """Expand user path in location."""
-        return os.path.expanduser(v)
+        if v:
+            return os.path.expanduser(v)
+        return v
 
 
 class TaskwarriorConfig(BaseModel):

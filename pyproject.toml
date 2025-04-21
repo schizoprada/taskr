@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "taskr"
-version = "0.1.0"
+version = "0.2.1"
 description = "A CLI wrapper for TaskWarrior with enhanced UX"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -30,7 +30,8 @@ dependencies = [
     "rich>=12.6.0",
     "pyyaml>=6.0",
     "pydantic>=1.10.0",
-    "colorama"
+    "colorama",
+    "python-dateutil"
 ]
 
 [project.optional-dependencies]
