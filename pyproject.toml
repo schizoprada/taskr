@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "taskr"
+name = "taskrx"
 version = "0.2.1"
 description = "A CLI wrapper for TaskWarrior with enhanced UX"
 readme = "README.md"
