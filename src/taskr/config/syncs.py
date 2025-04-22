@@ -4,7 +4,6 @@ from pydantic import BaseModel, Field
 
 from taskr.logs import log
 from taskr.config import getconfig, setconfig
-from taskr.sync.base import SyncManager
 
 
 class SyncTargetConfig(BaseModel):
