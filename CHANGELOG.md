@@ -1,5 +1,10 @@
 # CHANGELOG - Taskr
 
+## [0.2.5] -- Apr. 22, 2025
+
+### Added
+- Sync CLI Config Commands
+
 ## [0.2.4] -- Apr. 22, 2025
 
 ### Added

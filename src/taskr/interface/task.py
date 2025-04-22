@@ -151,21 +151,22 @@ def tasklist(
         project: Project filter.
         tags: Tags filter.
         priority: Priority filter.
-        all: Whether to include all tasks.
+        includeall: Whether to include all tasks.
         includedeleted: Whether to include deleted tasks.
 
     Returns:
         List of tasks.
     """
     # Build command args
-    args = ["export"]
+    # First add all filters, THEN add the export command
+    args = []
 
     # Apply status filter
     if status:
         args.append(f"status:{status}")
     elif not includeall:
         args.append("status:pending")
-    # No status filter if 'all=True' to get everything, we'll filter deleted tasks later
+    # No status filter if 'includeall=True' to get everything, we'll filter deleted tasks later
 
     # Add other filters
     if filterargs:
@@ -180,6 +181,9 @@ def tasklist(
 
     if priority:
         args.append(f"priority:{priority}")
+
+    # Add export command AFTER filters
+    args.append("export")
 
     # Execute command with allowfail=True to handle non-zero exits gracefully
     returncode, stdout, stderr = execute(args, allowfail=True)

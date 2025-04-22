@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "taskrx"
-version = "0.2.2"
+version = "0.2.5"
 description = "A CLI wrapper for TaskWarrior with enhanced UX"
 readme = "README.md"
 requires-python = ">=3.8"

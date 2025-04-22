@@ -72,19 +72,19 @@ def selectcommandinteractive():
         {"name": "delete", "description": "Delete a task", "callback": lambda: delete.deletecallback()},
         {"name": "info", "description": "Show task details", "callback": lambda: info.infocallback()},
         {"name": "backup", "description": "Backup TaskWarrior data", "callback": lambda: backup.backupcallback(None)},
+        {"name": "sync", "description": "Sync tasks with external services", "submenu": [
+            {"name": "taskd", "description": "Sync with TaskWarrior Server", "callback": lambda: sync.synctaskd()},
+            {"name": "reminders", "description": "Sync with Apple Reminders", "callback": lambda: sync.syncremindersinteractive()},
+            {"name": "config", "description": "Configure sync settings", "callback": lambda: sync.syncconfig(None)},
+            {"name": "status", "description": "Show sync status", "callback": lambda: sync.syncstatus()},
+            {"name": "auto", "description": "Run auto-sync", "callback": lambda: sync.syncauto()},
+        ]},
         {"name": "config", "description": "Configure Taskr", "submenu": [
             {"name": "edit", "description": "Edit configuration file", "callback": lambda: config.configedit()},
             {"name": "interactive", "description": "Edit configuration interactively", "callback": lambda: config.configinteractive()},
             {"name": "list", "description": "List configuration values", "callback": lambda: config.configlist(None)},
             {"name": "path", "description": "Show configuration file path", "callback": lambda: config.configpath()},
-        ]},
-        {"name": "sync", "description": "Sync tasks with external services", "submenu": [
-            {"name": "taskd", "description": "Sync with TaskWarrior Server", "callback": lambda: sync.synctaskd()},
-            {"name": "reminders", "description": "Sync with Apple Reminders", "callback": lambda: sync.syncremindersinteractive()},
-            {"name": "status", "description": "Show sync status", "callback": lambda: sync.syncstatus()},
-            {"name": "auto", "description": "Run auto-sync", "callback": lambda: sync.syncauto()},
-        ]},
-
+        ]}
     ]
 
     # Format choices for questionary
@@ -132,13 +132,16 @@ def selectcommandinteractive():
             ).ask()
 
             if submenuresult and submenuresult["name"] != "back":
+                # Execute the callback and explicitly ignore the return value
                 submenuresult["callback"]()
+                # Don't return anything here - this prevents the return value from displaying
             elif submenuresult and submenuresult["name"] == "back":
                 # Go back to main menu
                 selectcommandinteractive()
         else:
-            # Execute the selected command
+            # Execute the selected command and explicitly ignore the return value
             result["callback"]()
+            # Don't return anything here - this prevents the return value from displaying
 
 
 if __name__ == "__main__":

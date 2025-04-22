@@ -60,6 +60,7 @@ def buildcommand(args: t.List[str], raw: bool = False) -> t.List[str]:
     # Add rc options
     datalocation = getconfig("taskwarrior", "data.location")
     if datalocation:
+        datalocation = os.path.expanduser(datalocation)
         command.append(f"rc.data.location={datalocation}")
 
     # Add custom udas if defined

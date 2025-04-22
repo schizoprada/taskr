@@ -60,9 +60,9 @@ class ReminderSync(SyncManager):
         try:
             properties = reminder.osaproperties()
             if self.listname:
-                cmd = osascript.builder().bylist(self.listname).withproperties(properties).build()
+                cmd = osascript.builder().create().bylist(self.listname).withproperties(properties).build()
             else:
-                cmd = osascript.builder().withproperties(properties).build()
+                cmd = osascript.builder().create().withproperties(properties).build()
 
             result = cmd.execute()
 

@@ -160,6 +160,7 @@ class Reminder:
             properties["flagged"] = self.flagged
         return properties
 
+
     @classmethod
     def FromTask(cls, task: Task) -> 'Reminder':
         reminderid = task.udas.get("reminder_id") if hasattr(task, "udas") else None
@@ -172,10 +173,23 @@ class Reminder:
         if task.due:
             if isinstance(task.due, str):
                 try:
+                    # Handle different TaskWarrior date formats
                     if len(task.due) == 8 and task.due.isdigit():
+                        # Format: YYYYMMDD
                         duedate = datetime.strptime(task.due, "%Y%m%d")
+                    elif len(task.due) >= 10 and 'T' in task.due:
+                        # Format: YYYYMMDDTHHMMSSZ
+                        # Extract just the date part before the T
+                        datepart = task.due.split('T')[0]
+                        if len(datepart) == 8:
+                            duedate = datetime.strptime(datepart, "%Y%m%d")
+                        else:
+                            log.error(f"Unrecognized date format: {task.due}")
                     elif len(task.due) >= 10:
+                        # Format: YYYY-MM-DD
                         duedate = datetime.strptime(task.due[:10], "%Y-%m-%d")
+                    else:
+                        log.error(f"Unrecognized date format: {task.due}")
                 except Exception as e:
                     log.error(f"error parsing task due date ({task.due}): {str(e)}")
             else:
