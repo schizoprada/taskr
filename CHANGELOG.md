@@ -1,5 +1,15 @@
 # CHANGELOG - Taskr
 
+## [0.2.2] -- Apr. 22, 2025
+
+### Added
+- Apple Reminders synchronization for macOS users
+- Two-way sync between TaskWarrior and Apple Reminders
+- Customizable list targeting for Reminders integration
+
+### Fixed
+- Date formatting issues with datetime conversions
+
 ## [0.2.0] -- Apr. 21, 2025
 
 ### Added
