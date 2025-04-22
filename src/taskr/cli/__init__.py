@@ -19,6 +19,7 @@ from .commands import (
     config,
     backup,
     repeat,
+    sync,
 )
 from taskr.cli.common import getstyle, console
 
@@ -40,6 +41,7 @@ app.add_typer(info.app, name="info", help="Show task details")
 app.add_typer(config.app, name="config", help="Configure Taskr")
 app.add_typer(backup.app, name="backup", help="Backup TaskWarrior data")
 app.add_typer(repeat.app, name="repeat", help="Repeat a task with specified frequency")
+app.add_typer(sync.app, name="sync", help="Sync tasks with external services")
 
 
 @app.callback()
@@ -75,7 +77,14 @@ def selectcommandinteractive():
             {"name": "interactive", "description": "Edit configuration interactively", "callback": lambda: config.configinteractive()},
             {"name": "list", "description": "List configuration values", "callback": lambda: config.configlist(None)},
             {"name": "path", "description": "Show configuration file path", "callback": lambda: config.configpath()},
-        ]}
+        ]},
+        {"name": "sync", "description": "Sync tasks with external services", "submenu": [
+            {"name": "taskd", "description": "Sync with TaskWarrior Server", "callback": lambda: sync.synctaskd()},
+            {"name": "reminders", "description": "Sync with Apple Reminders", "callback": lambda: sync.syncremindersinteractive()},
+            {"name": "status", "description": "Show sync status", "callback": lambda: sync.syncstatus()},
+            {"name": "auto", "description": "Run auto-sync", "callback": lambda: sync.syncauto()},
+        ]},
+
     ]
 
     # Format choices for questionary

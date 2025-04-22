@@ -8,12 +8,14 @@ from datetime import datetime
 
 from taskr.logs import log
 from taskr.interface import Task, tasklist
+from taskr.sync.base import SyncManager
 from taskr.sync.reminders.core import Reminder
 from taskr.sync.reminders.osa import osascript
 
 
-class ReminderSync:
+class ReminderSync(SyncManager):
     def __init__(self, listname: t.Optional[str] = None) -> None:
+        super().__init__(name="Reminders", canimport=True, canexport=True)
         self.listname = listname
         self._ensurelistexists()
 
@@ -120,7 +122,7 @@ class ReminderSync:
             return False
 
 
-    def exports(self, filterargs: t.Optional[t.List[str]] = None) -> int:
+    def _exports(self, filterargs: t.Optional[t.List[str]] = None) -> int:
         tasks = tasklist(filterargs=filterargs)
         if not tasks:
             log.debug(f"no tasks found for export")
@@ -152,7 +154,7 @@ class ReminderSync:
 
         return created + updated
 
-    def imports(self, completed: bool = False) -> int:
+    def _imports(self, completed: bool = False) -> int:
         reminders = osascript.getreminders(self.listname)
         if not reminders:
             log.info(f"no reminders found in '{self.listname}'")
